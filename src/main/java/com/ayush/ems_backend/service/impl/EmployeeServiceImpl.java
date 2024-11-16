@@ -9,6 +9,9 @@ import com.ayush.ems_backend.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -32,5 +35,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                         "Doesnt " +
                         "exist with the given ID : "+employeeId));
         return EmployeeMapper.mapToEmployeeDto(employee);
+    }
+
+    @Override
+    public List<EmployeeDto> getAllEmployee() {
+        List<Employee> allEmployees = employeeRepository.findAll();
+        return allEmployees.stream().map((eachEmployee)->EmployeeMapper.mapToEmployeeDto(eachEmployee))
+                .collect(Collectors.toList());
     }
 }
